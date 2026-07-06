@@ -398,6 +398,13 @@ func TestAffixNameMapper_ToTXTName(t *testing.T) {
 			recordType:  endpoint.RecordTypeTXT,
 			wantTXTName: "txt-foo.example.com",
 		},
+		{
+			name:        "suffix with dotted hostname (#5151)",
+			mapper:      NewAffixNameMapper("", "-txtSuffix", ""),
+			dns:         "name-192.168.0.1.example.com",
+			recordType:  endpoint.RecordTypeA,
+			wantTXTName: "name-192.168.0.1.example.com-txtsuffix",
+		},
 	}
 
 	for _, tt := range tests {
@@ -561,6 +568,13 @@ func TestToEndpointNameNewTXT(t *testing.T) {
 			domain:     "example.com",
 			recordType: "A",
 			txtDomain:  "example.fooa.bar.com",
+		},
+		{
+			name:       "suffix with dotted hostname (#5151)",
+			mapper:     NewAffixNameMapper("", "-txtSuffix", ""),
+			domain:     "name-192.168.0.1.example.com",
+			recordType: "A",
+			txtDomain:  "name-192.168.0.1.example.com-txtsuffix",
 		},
 	}
 
